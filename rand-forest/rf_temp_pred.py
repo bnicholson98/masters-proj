@@ -113,7 +113,7 @@ plt.xticks(x_values, feature_list, rotation='vertical')
 plt.ylabel('Importance')
 plt.xlabel('Variable')
 plt.title('Variable Importances')
-
+plt.show()
 
 # Use datetime for creating date objects for plotting
 import datetime

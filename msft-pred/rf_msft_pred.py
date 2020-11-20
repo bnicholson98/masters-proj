@@ -36,7 +36,7 @@ data = np.array(data)
 
 # Use skikit learn to split data
 from sklearn.model_selection import train_test_split
-train_data, test_data, train_labels, test_labels = train_test_split(data, labels, test_size = 0.2)
+train_data, test_data, train_labels, test_labels = train_test_split(data, labels, test_size = 0.01)
 
 # Set baseline prediction (avg between high and low)
 baseline_preds = np.array([])
@@ -50,7 +50,7 @@ print('Avg baseline error: ', round(np.mean(baseline_errors),2))
 
 # train model
 from sklearn.ensemble import RandomForestRegressor
-rf = RandomForestRegressor(n_estimators = 500)
+rf = RandomForestRegressor(n_estimators = 100)
 rf.fit(train_data, train_labels)
 
 # test model
@@ -83,7 +83,10 @@ importances = list(rf.feature_importances_)
 feature_importances = [(feature, round(importance, 2)) for feature, importance in zip(attribute_list, importances)]
 feature_importances = sorted(feature_importances, key = lambda x: x[1], reverse = True)
 
-# visualise
+#print variable importance 
+# [print('Variable: {:20} Importance: {}'.format(*pair)) for pair in feature_importances];
+
+# VISUALISE
 import matplotlib.pyplot as plt
 
 #set style
@@ -98,11 +101,12 @@ plt.xticks(x_values, attribute_list, rotation='vertical')
 plt.ylabel('Importance')
 plt.xlabel('Variable')
 plt.title('Variable Importances')
+plt.show()
 
 
-# ATTEMPT OF GRAPH
-# Use datetime for creating date objects for plotting
+# plotting entire dataset with predictions
 import datetime
+
 # Dates of training values
 months = data[:, attribute_list.index('Month')]
 days = data[:, attribute_list.index('Day')]
@@ -112,6 +116,7 @@ dates = [str(int(year)) + '-' + str(int(month)) + '-' + str(int(day)) for year, 
 dates = [datetime.datetime.strptime(date, '%Y-%m-%d') for date in dates]
 # Dataframe with true values and dates
 true_data = pd.DataFrame(data = {'date': dates, 'actual': labels})
+
 # Dates of predictions
 months = test_data[:, attribute_list.index('Month')]
 days = test_data[:, attribute_list.index('Day')]
@@ -122,14 +127,30 @@ test_dates = [str(int(year)) + '-' + str(int(month)) + '-' + str(int(day)) for y
 test_dates = [datetime.datetime.strptime(date, '%Y-%m-%d') for date in test_dates]
 # Dataframe with predictions and dates
 predictions_data = pd.DataFrame(data = {'date': test_dates, 'prediction': predictions})
+
 # Plot the actual values
 plt.plot(true_data['date'], true_data['actual'], 'b-', label = 'actual')
-# Plot the predicted values
-plt.plot(predictions_data['date'], predictions_data['prediction'], 'ro', label = 'prediction')
+plt.xlabel('Date'); plt.ylabel('Price($)'); plt.title('Actual values');
 plt.xticks(rotation = '60'); 
 plt.legend()
-# Graph labels
-plt.xlabel('Date'); plt.ylabel('Close Price($)'); plt.title('Actual and Predicted Values');
+plt.show()
+
+# Plot the predicted values
+plt.plot(predictions_data['date'], predictions_data['prediction'], 'ro', label = 'prediction')
+plt.xlabel('Date'); plt.ylabel('Price($)'); plt.title('Predicted Values');
+plt.xticks(rotation = '60'); 
+plt.legend()
+plt.show()
+
+
+# CROSS VALIDATION
+plt.scatter(test_labels, predictions)
+plt.plot([labels.min(), labels.max()], [labels.min(), labels.max()], 'k--', lw=1)
+plt.xlabel('Measured')
+plt.ylabel('Predicted')
+plt.show()
+
+ 
 
 
 
