@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Wed Nov 25 15:47:28 2020
+Created on Thu Nov 26 18:02:30 2020
 
 @author: ben
 
-Initial prototype - Random Forest with basic input
+Create a new version of the prototype random forest without 'Open' input
 """
+
 
 import matplotlib.pyplot as plt 
 from alpha_vantage.timeseries import TimeSeries
@@ -31,6 +32,7 @@ input_data['Open'] = data['1. open']
 input_data.columns= ['Prev. Open','Prev. High', 'Prev. Low', 'Prev. Close', 'Prev. Volume', 'Day', 'Month', 'Year', 'Open']
 #print(input_data)
 input_data = input_data.drop(input_data.index[0])
+del input_data['Open']
 print(input_data)
 
 # Set output variables
@@ -52,8 +54,6 @@ rf.fit(train_data, train_labels)
 # test model
 predictions = rf.predict(test_data)
 
-
-
 # error
 errors = abs(predictions - test_labels)
 print("Avg error on model: ", round(np.mean(errors),2))
@@ -62,39 +62,6 @@ print("Avg error on model: ", round(np.mean(errors),2))
 mape = 100*(errors/test_labels)
 accuracy = 100 - np.mean(mape)
 print("Accuracy: ", round(accuracy, 2),"%")
-
-'''
-Test to predict direction accuracy
-'''
-correct__dir_guess = 0
-
-for i in range(len(test_labels)):
-    if (test_labels[i] >= test_data['Open'][i] and predictions[i] >= test_data['Open'][i]) or \
-       (test_labels[i] < test_data['Open'][i] and predictions[i] < test_data['Open'][i]):
-           correct__dir_guess += 1
-
-dir_guess_accuracy = (correct__dir_guess/len(test_labels))*100
-print('Accuracy of direction prediction: ', round(dir_guess_accuracy, 2),'%')          
-    
-# Example prediction  
-print('\n')    
-print(test_data['Open'][100])
-print(test_labels[100])
-print(predictions[100])
-
-
-# Interpret a tree example
-from sklearn.tree import export_graphviz
-import pydot
-
-# Example of shortened tree
-rf_small = RandomForestRegressor(n_estimators=10, max_depth = 5)
-rf_small.fit(train_data, train_labels)
-googl_tree_small = rf_small.estimators_[5]
-# save tree example
-export_graphviz(googl_tree_small, out_file = 'googl_small_tree.dot', feature_names = attribute_list, rounded = True, precision = 1)
-(graph, ) = pydot.graph_from_dot_file('googl_small_tree.dot')
-graph.write_png('googl_small_tree.png');
 
 
 
@@ -123,8 +90,6 @@ plt.ylabel('Importance')
 plt.xlabel('Variable')
 plt.title('Variable Importances')
 plt.show()
-
-
 
 
 
