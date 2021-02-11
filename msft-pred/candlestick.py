@@ -36,10 +36,8 @@ plt.show()
 
 
 ### CANDLESTICK GRAPH ###
-
 dates = (pd.to_datetime(data.index.values))
 data['6. date'] = dates
-
 
 fig, ax = plt.subplots(figsize=(16,8))
 plt.plot(data['6. date'], data['4. close'], c='black')
@@ -60,8 +58,6 @@ plt = fplt.plot(data,
            style = 'yahoo',
            title = 'GOOGL - Dec 2019',
            ylabel='Price ($)',
-           #volume = True,
-           #ylabel_lower = 'Volume'
            )
 
 

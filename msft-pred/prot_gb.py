@@ -52,11 +52,11 @@ predictions = gb.predict(test_data)
 
 
 
-# error
+# Error
 errors = abs(predictions - test_labels)
 print("Avg error on model: ", round(np.mean(errors),2))
 
-# mape
+# Mape
 mape = 100*(errors/test_labels)
 accuracy = 100 - np.mean(mape)
 print("Accuracy: ", round(accuracy, 2),"%")
@@ -79,4 +79,23 @@ print('\n')
 print(test_data['Open'][100])
 print(test_labels[100])
 print(predictions[100])
+
+
+print()
+# Cross-Validation
+from sklearn.model_selection import cross_val_score
+from sklearn.model_selection import RepeatedKFold
+from numpy import mean
+from numpy import std
+
+cv = RepeatedKFold(n_splits=10, n_repeats=5)
+# evaluate the model
+n_scores = cross_val_score(
+    gb, input_data, labels,
+    scoring='neg_mean_absolute_error',
+    cv=cv, n_jobs=-1)
+# report performance
+print("10-fold evaluation of gradient boosting model:")
+print('Mean Average Error: %.2f' % (mean(n_scores)*(-1)))
+print('Standard deviation: %.2f' % std(n_scores))
 

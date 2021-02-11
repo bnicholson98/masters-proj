@@ -77,6 +77,29 @@ print('\n')
 # VISUALISE
 import matplotlib.pyplot as plt
 
+# =============================================================================
+# # Plot pie chart
+# 
+# pie_labels = attribute_list
+# pie_values = importances
+# 
+# df = pd.DataFrame(
+#     data = {'attribute': pie_labels, 'value':pie_values})
+# print(df)
+# for index, row in df.iterrows():
+#     if row['value'] < 0.01:
+#         df.drop(row[])
+# 
+# fig, ax = plt.subplots()
+# ax.pie(pie_values, labels = pie_labels, startangle=90, textprops={'fontsize': 10})
+# ax.axis('equal')
+# #ax.legend(loc=1, labels=pie_labels, prop={'size': 12})
+# 
+# plt.tight_layout()
+# plt.show()
+# =============================================================================
+
+
 #set style
 plt.style.use('fivethirtyeight')
 # list x locations
@@ -90,6 +113,7 @@ plt.ylabel('Importance')
 plt.xlabel('Variable')
 plt.title('Variable Importances')
 plt.show()
+    
 
 
 

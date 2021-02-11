@@ -123,8 +123,23 @@ plt.ylabel('Importance')
 plt.xlabel('Variable')
 plt.title('Variable Importances')
 plt.show()
+    
 
 
+print()
+# Cross-Validation
+from sklearn.model_selection import cross_val_score
+from sklearn.model_selection import RepeatedKFold
+from numpy import mean
+from numpy import std
+
+cv = RepeatedKFold(n_splits=10, n_repeats=5)
+# evaluate the model
+n_scores = cross_val_score(rf, input_data, labels, scoring='neg_mean_absolute_error', cv=cv, n_jobs=-1)
+# report performance
+print("10-fold evaluation of random forest model:")
+print('Mean Average Error: %.2f' % (mean(n_scores)*(-1)))
+print('Standard deviation: %.2f' % std(n_scores))
 
 
 
