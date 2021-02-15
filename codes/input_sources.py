@@ -34,12 +34,17 @@ MY_KEY = '54SG4FMYHLXQJZ56'
 import matplotlib.pyplot as plt 
 import pandas as pd
 from alpha_vantage.timeseries import TimeSeries
+from alpha_vantage.techindicators import TechIndicators
+
 
 ts = TimeSeries(key=MY_KEY, output_format='pandas')
 data, meta_data = ts.get_daily(symbol='GOOGL',outputsize='full')
 print(data)
 
-
+ti = TechIndicators(key = MY_KEY, output_format='pandas')
+ti_data, ti_meta = ti.get_sma(symbol='GOOGL')
+print(ti_data)
+print(ti_meta)
 data['4. close'].plot()
 plt.title('Intraday TimeSeries Google')
 plt.ylabel("Price ($)")
