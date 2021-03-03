@@ -39,6 +39,7 @@ attribute_list = list(input_data.columns)
 labels = np.delete(labels, 0)
 
 
+
 '''
 Constant change baseline
 '''
