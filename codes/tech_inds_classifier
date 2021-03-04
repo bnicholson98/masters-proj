@@ -12,6 +12,7 @@ import bs4 as bs
 import numpy as np
 import pandas_datareader as pdr
 import pandas as pd
+import pandas_ta as ta
 
 # collecting S&P 100 tickers
 wiki = requests.get('https://en.wikipedia.org/wiki/S%26P_100')
@@ -56,4 +57,34 @@ data['middleband'] = data.groupby('ticker')['Close'].transform(lambda x: x.rolli
 extra_data['SD'] = data.groupby('ticker')['Close'].transform(lambda x: x.rolling(window=20).std())
 data['upperband'] = data['middleband'] + 2*extra_data['SD']                                             # upper bollinger band
 data['lowerband'] = data['middleband'] - 2*extra_data['SD']                                             # lower bollinger band
+
+temp_data = data.copy()
+for i in data['ticker'].unique():
+    data.loc[data.ticker==i] = pd.concat([data, temp_data.ta.aroon()], axis=1)       # AROON indicators
+
+data['ema12'] = data.groupby('ticker')['Close'].transform(lambda x: x.ewm(span=12, adjust=False).mean())    # 12 day ema
+data['ema26'] = data.groupby('ticker')['Close'].transform(lambda x: x.ewm(span=26, adjust=False).mean())    # 26 day ema
+data['MACD'] = data['ema12'] - data['ema26']                                                                # MACD indicator
+
+# OBV indicator
+for i in data['ticker'].unique():
+    data.loc[data.ticker==i, 'OBV'] = np.where(data.loc[data.ticker==i, 'Close'] > data.loc[data.ticker==i, 'Close'].shift(1),
+                                               data.loc[data.ticker==i, 'Volume'],
+                                                np.where(data.loc[data.ticker==i,'Close'] < data.loc[data.ticker==i, 'Close'].shift(1),
+                                                         -data.loc[data.ticker==i, 'Volume'], 0)).cumsum()
+
+# Stochastic indicator
+extra_data['lowest14'] = data.groupby('ticker')['Low'].transform(lambda x: x.rolling(window=14).min())
+extra_data['highest14'] = data.groupby('ticker')['High'].transform(lambda x: x.rolling(window=14).max())
+data['StochK'] = 100*((data['Close']-extra_data['lowest14'])/(extra_data['highest14']-extra_data['lowest14']))
+data['StochD'] = data.groupby('ticker')['StochK'].transform(lambda x: x.rolling(window=3).mean())
+
+# rsi indicator
+for i in data['ticker'].unique():
+    data.loc[data.ticker==i, 'RSI'] = temp_data[data.ticker==i].ta.rsi()
+
+adx = data.ta.adx()
+
+
+print(adx)
 print(data)
