@@ -1,7 +1,5 @@
 **A Machine Learning Approach to Stock Market Trading**
 
-Repo URL: https://git-teaching.cs.bham.ac.uk/mod-ug-proj-2020/bxn769
-
 The main results can be found in the CSV files. For example, algo_dfV2-2019.csv refers to the results from the version 2 algoirthm on the 2019 data (this is the main test of the project).
 
 If you wish to reproduce these results you will need to download the repository, this contains the full_data.csv which is a 100+MB file that is necessary for both the learning processes and the execution of the automated trading algorithm. You will also need an IDE appropriate for running Python code in.
