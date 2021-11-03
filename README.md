@@ -1,21 +1,13 @@
 **A Machine Learning Approach to Stock Market Trading**
 
-The main results can be found in the CSV files. For example, algo_dfV2-2019.csv refers to the results from the version 2 algoirthm on the 2019 data (this is the main test of the project).
+This repo is split into 'development' and 'final'. While developing the project I was uploading my work to both this github and my University Gitlab, once files became too large to commit here I only pushed to the gitlab. 'development' shows all work and commits up until this point. 'final' shows the final important files and results.
 
-If you wish to reproduce these results you will need to download the repository, this contains the full_data.csv which is a 100+MB file that is necessary for both the learning processes and the execution of the automated trading algorithm. You will also need an IDE appropriate for running Python code in.
-
-The main scripts are simply in the 'codes' folder:
-- trading_algo: Algorithm V1 on 2019 data.
-- trading_algo2010: Algorithm V1 on 2010 data.
-- trading_algoV2: Algorithm V2 on 2019 data.
-- trading_algoV2-2010: Algorithm V2 on 2010 data.
+The main results can be found in the CSV files. For example, algo_dfV2-2020.csv refers to the results from the version 2 algoirthm on the 2020 data.
 
 To run any of these, you will need to
-- Update the filepath at the start of the code (replace ###YOUR_PATH### with the path your downloaded repo is in). This is for calling the input data.
-
-The other scripts in the 'codes' folder are:
-- rf_model: script for performing grid search and testing random forest model.
-- tech_inds_classifier: script for creating the expansive input data with all technical indicators.
+- Produce the dataset by running tech_inds_classifier.
+- Create the rf model by then running rf_model.
+**** Update the filepath at the start of the code (replace ###YOUR_PATH### with the path your downloaded repo is in). This is for calling the input data.
 
 If you wish to re-run rf_model, you will need to uncomment the code labelled gridsearch (this was commented out to avoid a grid search happening at every run of the code). This process will take over 1 hour to run.
 You will also need to update the path at the **start** of the code (as with the trading algo codes).
@@ -49,13 +41,4 @@ All these scripts, except rf_tech_inds, make use of an API key which I have remo
 - alpha_vantage
 - glob
 
-
-**The following is a brief guide to the rest of the repository.**
-- 'input-data' folder stores various input data forms, full_data.csv being the data used for the final algorithm.
-- 'models' folder stores the machine learnt model.
-- 'plots' contains a mix of plots and images used to make the report.
-- 'practice-codes' contains general machine learning algorithms I made to practice the techniques I have used.
-- 'refs' contains the bibliography used for the report.
-
-
-**If you have any other queries or problems with the code please email me: bxn769@student.bham.ac.uk**
+**If you have any other queries or problems with the code please email me: bxn769@alumni.bham.ac.uk**
